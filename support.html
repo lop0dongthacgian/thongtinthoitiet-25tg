@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yêu cầu hỗ trợ khẩn cấp - Trung Bình A3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #b8a6ff 0%, #d9b9ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #004DFF;
+            color: #1e3c72;
+            padding: 20px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 99, 214, 0.2);
+            z-index: 1;
+        }
+
+        .header > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #FFD700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .footer .back-button {
+            display: inline-block;
+            margin: 0 auto 20px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #1e3c72;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .footer {
+            text-align: center;
+        }
+
+        .back-button:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .support-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #1e3c72;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 16px;
+            font-family: inherit;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background-color: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .alert {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .success-message {
+            background: rgba(212, 237, 218, 0.95);
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 20px 25px;
+            border-radius: 12px;
+            margin: 20px auto;
+            width: 90%;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .content {
+                padding: 20px 15px;
+            }
+
+            .support-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🙋‍♂️ Góp ý hoặc <br> Yêu cầu hỗ trợ khẩn cấp</h1>
+        </div>
+
+        <div class="content">
+            <div class="support-form">
+                <h2 style="color: #1e3c72; margin-bottom: 20px;">📝 Gửi yêu cầu hỗ trợ hoặc góp ý cho ứng dụng</h2>
+                
+                <div id="alert" class="alert"></div>
+                <div id="successMessage" class="success-message"></div>
+
+                <form id="requestForm">
+                    <div class="form-group">
+                        <label for="name">Họ và tên *</label>
+                        <input type="text" id="name" name="name" required placeholder="Nhập họ tên của bạn">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Địa chỉ *</label>
+                        <input type="text" id="address" name="address" required placeholder="Số nhà, đường/phố, tổ dân phố">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại *</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="Số điện thoại liên hệ">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Nội dung cần hỗ trợ hoặc góp ý cho ứng dụng *</label>
+                        <textarea id="content" name="content" required placeholder="Mô tả chi tiết tình huống cần hỗ trợ hoặc góp ý"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        📨 Gửi yêu cầu hoặc góp ý
+                    </button>
+                </form>
+            </div>
+        </div>
+      
+        <div class="footer">
+            <a href="index.html" class="back-button">← Quay lại trang chính</a>
+        </div>
+    </div>
+
+    <script>
+        // ===== HÀM HIỂN THỊ THÔNG BÁO =====
+        function showSuccessMessage() {
+            const successMessage = document.getElementById('successMessage');
+            successMessage.innerHTML = `
+                ✅ <b>Gửi thành công!</b><br>
+                Chúng tôi đã nhận được yêu cầu của bạn và sẽ xử lý trong thời gian sớm nhất.
+            `;
+            successMessage.classList.add('show');
+            successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            document.getElementById('requestForm').reset();
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 10000);
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.classList.add('show');
+            setTimeout(() => {
+                alert.classList.remove('show');
+            }, 5000);
+        }
+
+        // ===== XỬ LÝ GỬI FORM =====
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('requestForm');
+            const submitBtn = document.getElementById('submitBtn');
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+
+                // Lấy dữ liệu từ form
+                const name = document.getElementById('name').value.trim();
+                const address = document.getElementById('address').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const content = document.getElementById('content').value.trim();
+
+                // Kiểm tra các trường bắt buộc
+                if (!name || !address || !phone || !content) {
+                    showError('Vui lòng điền đầy đủ các trường bắt buộc (*)');
+                    return;
+                }
+
+                // Tạo đối tượng dữ liệu
+                const data = {
+                    name: name,
+                    address: address,
+                    phone: phone,
+                    content: content,
+                    timestamp: new Date().toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })
+                };
+
+                // Vô hiệu hóa nút gửi
+                submitBtn.textContent = '⏳ Đang gửi...';
+                submitBtn.disabled = true;
+
+                // Gửi dữ liệu đến Google Apps Script
+                fetch('https://script.google.com/macros/s/AKfycbzVdUERNLjaAJcj-wcoHWEXuXgvxDNXK3Sjr0IN9S44NjVoMAHGRfFqnyf9JbZkBr-2rQ/exec', {
+                    method: 'POST',
+                    mode: 'no-cors', // Quan trọng: cho phép gửi từ trang web tĩnh
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(() => {
+                    // Vì mode no-cors không trả về response, ta coi là thành công
+                    showSuccessMessage();
+                })
+                .catch((error) => {
+                    console.error('Lỗi:', error);
+                    showError('Có lỗi xảy ra khi gửi yêu cầu. Vui lòng thử lại sau.');
+                })
+                .finally(() => {
+                    submitBtn.textContent = '📨 Gửi yêu cầu hoặc góp ý';
+                    submitBtn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+</html>
