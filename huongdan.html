@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Hướng dẫn an toàn khi bão đổ bộ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2ff, #ffffff);
+            margin: 0;
+            padding: 0;
+            color: #16325c;
+        }
+        header {
+            background: url('img/bao1.gif') no-repeat center center; /* Dùng ảnh làm nền */
+            background-size: cover; /* Phủ kín header */
+            color: #fff; /* Màu chữ mặc định cho header */
+            text-align: center;
+            padding: 60px 15px; /* Điều chỉnh padding nếu cần */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            position: relative; /* Để thêm lớp phủ nếu cần */
+            margin-bottom: 0; /* Loại bỏ margin dưới */
+        }
+
+        /* Lớp phủ màu để chữ dễ nhìn hơn nếu ảnh nền sáng */
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(11, 99, 214, 0.0); 
+            z-index: 1;
+        }
+
+        /* Đảm bảo văn bản nằm trên lớp nền */
+        header > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-size: 32px; /* Cỡ chữ tiêu đề - bạn có thể thay đổi số này */
+            color: #FFD700; /* Màu chữ tiêu đề - ví dụ: vàng (Gold) - bạn có thể thay đổi */
+            margin-bottom: 5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Tạo hiệu ứng viền cho chữ rõ hơn trên nền */
+        }
+        header p {
+            font-size: 15px;
+            opacity: 0.9;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5); /* Tạo hiệu ứng viền cho chữ rõ hơn */
+        }
+        main {
+            max-width: 900px;
+            margin: 0 auto; /* Căn giữa */
+            padding: 20px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            /* Xóa margin-top để dính sát vào header */
+        }
+        h2 {
+            color: #0b63d6;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .step-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .step-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            background: linear-gradient(180deg, #ffffff, #f6faff);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(11,99,214,0.1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .step-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(11,99,214,0.15);
+        }
+        .step-number {
+            min-width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: linear-gradient(180deg,#0b63d6,#064aa8);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 4px 10px rgba(11,99,214,0.2);
+        }
+        .step-text {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .step-text b {
+            color: #0b63d6;
+        }
+        footer {
+            text-align: center;
+            margin: 30px 0 20px;
+            color: #777;
+            font-size: 14px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 30px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(67, 233, 123, 0.4);
+        }
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 28px; /* Cỡ chữ nhỏ hơn trên mobile */
+            }
+            .step-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🛡️ HƯỚNG DẪN AN TOÀN <br> KHI BÃO ĐỔ BỘ</h1>
+        <p>Cục Quản lý đê điều và Phòng, chống thiên tai <br> Bộ NN&PTNT, phối hợp cùng UNICEF</p>
+    </header>
+    <!-- Thẻ <img> đã được xóa -->
+    <main>
+        <h2>Các biện pháp đảm bảo an toàn cho người dân</h2>
+        <div class="step-list">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-text"><b>Theo dõi thông tin bão:</b> Thường xuyên theo dõi dự báo và cảnh báo chính thức từ cơ quan khí tượng.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-text"><b>Ở yên trong nhà:</b> Đóng chặt cửa, tránh xa khu vực cửa sổ, kính và vật dễ vỡ.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-text"><b>Hạn chế ra ngoài:</b> Chỉ ra ngoài khi thật cần thiết và mang theo áo mưa, đèn pin, điện thoại liên lạc.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">4</div>
+                <div class="step-text"><b>Chọn nơi trú ẩn an toàn:</b> Không trú dưới cây, cột điện hay mái tôn. Cẩn thận với vật dễ bay và đổ ngã.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">5</div>
+                <div class="step-text"><b>Ngắt các nguồn nguy hiểm:</b> Tắt điện, khóa gas để tránh cháy nổ, điện giật.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">6</div>
+                <div class="step-text"><b>Đề phòng tâm bão:</b> Khi gió ngừng thổi, không nên ra ngoài ngay vì tâm bão chỉ tạm lặng trong 30–60 phút.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">7</div>
+                <div class="step-text"><b>Phòng các hiện tượng khác:</b> Cảnh giác lũ quét, sạt lở đất, ngập úng và nước dâng ven biển.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">8</div>
+                <div class="step-text"><b>Liên lạc khẩn cấp:</b> Gọi ngay các số cứu hộ – cứu nạn, thông tin vị trí và tình trạng nguy hiểm.</div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">9</div>
+                <div class="step-text"><b>Tuân thủ chỉ đạo:</b> Thực hiện nghiêm hướng dẫn của chính quyền và lực lượng chức năng.</div>
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <a href="index.html" class="back-btn">⬅️ Quay lại trang chính</a>
+        </div>
+    </main>
+    <footer>
+        © 2026 Tổ công nghệ số 25 Thạc Gián<br> phường Thanh Khê, thành phố Đà Nẵng
+    </footer>
+</body>
+</html>
+
+
