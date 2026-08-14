@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông tin Thời tiết và Báo bão - 25 Thạc Gián</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #b8a6ff 0%, #d9b9ff 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+.header {
+    background: url('img/img.gif') no-repeat center center;
+    background-size: cover;
+    color: white;
+    padding: 60px 30px;
+    text-align: center;
+    position: relative;
+}
+
+/* Lớp phủ màu để chữ dễ nhìn hơn */
+.header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(11, 99, 214, 0.2);
+    z-index: 1;
+}
+
+/* Đảm bảo văn bản nằm trên lớp nền */
+.header > * {
+    position: relative;
+    z-index: 2;
+}
+
+.header h1 {
+    font-size: 62px;
+    margin-bottom: 10px;
+    color: #FFD700;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    padding: 2px 0;
+}
+
+.header p {
+    font-size: 16px;
+    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+/* CSS cho chữ chạy được tạo động bởi marquee.js */
+
+.content {
+    padding: 40px 30px;
+}
+
+.grid-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin: 0 0 30px 0;
+}
+
+.section-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.section-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.section-box details {
+    border-left: 5px solid #667eea;
+    transition: all 0.4s ease;
+}
+
+.section-box summary {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e3c72;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.section-box summary:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+.section-box summary::after {            
+    content: '➕';
+    position: absolute;
+    right: 20px;
+    font-size: 14px;
+    transition: transform 0.3s;
+}
+
+.section-box details[open] summary::after {             
+    content: '➖';
+    transform: rotate(180deg);
+}
+
+.section-content {
+    padding: 0 20px;
+    line-height: 1.7;
+    color: #555;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    max-height: 0;
+    opacity: 0;
+}
+
+.section-box details[open] .section-content {
+    padding: 0 20px 20px 20px;
+    max-height: 1000px;
+    opacity: 1;
+    border-top: 1px solid #eee;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.contact-list {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-list li {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #764ba2;
+}
+
+.contact-list strong {
+    color: #1e3c72;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.contact-list a {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+/* Định dạng thống nhất cho 3 nút đầu tiên */
+.section-box:first-child,
+.section-box:nth-child(2),
+.section-box:nth-child(3) {
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.section-box:first-child details,
+.section-box:nth-child(2) details,
+.section-box:nth-child(3) details {
+    border-left: 5px solid #667eea;
+    border-right: 5px solid #667eea;
+}
+
+.section-box:first-child:hover,
+.section-box:nth-child(2):hover,
+.section-box:nth-child(3):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+/* Định dạng cho nút công điện */
+.noti-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+    background: #f8f9fa;
+    color: #1e3c72;
+    text-align: center;
+    border-radius: 12px;
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 5px solid #667eea;
+    border-right: 5px solid #667eea;
+    cursor: pointer;
+}
+
+.noti-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    background-color: rgba(102, 126, 234, 0.05);
+}
+
+.btn {
+    flex-grow: 1;
+    max-width: 300px;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-weather {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.btn-camera {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.btn-support {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+}
+
+.btn-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.footer {
+    background: #1e3c72;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 14px;
+}
+
+/* Modal chọn trang thời tiết */
+.weather-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+}
+
+.weather-modal-content {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.weather-modal h2 {
+    color: #1e3c72;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.weather-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.weather-option {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid transparent;
+}
+
+.weather-option:hover {
+    background: #e9ecef;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.weather-option.selected {
+    border-color: #667eea;
+    background: #e6f7ff;
+}
+
+.weather-option-icon {
+    font-size: 28px;
+    margin-right: 15px;
+}
+
+.weather-option-info {
+    text-align: left;
+    flex: 1;
+}
+
+.weather-option-name {
+    font-weight: 600;
+    color: #1e3c72;
+    margin-bottom: 5px;
+}
+
+.weather-option-desc {
+    font-size: 14px;
+    color: #666;
+}
+
+.weather-modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.weather-modal-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.weather-modal-cancel {
+    background: #f8f9fa;
+    color: #666;
+}
+
+.weather-modal-cancel:hover {
+    background: #e9ecef;
+}
+
+.weather-modal-go {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    color: white;
+}
+
+.weather-modal-go:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 233, 123, 0.4);
+}
+
+/* 📱 Tùy chỉnh cho điện thoại */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 22px;
+    }
+
+    .content {
+        padding: 20px 15px;
+    }
+
+    .grid-sections {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .btn {
+        max-width: 100%;
+    }
+    
+    .weather-modal-content {
+        padding: 20px;
+        margin: 20px;
+    }
+    
+    .weather-option {
+        padding: 12px;
+    }
+    
+    .noti-btn {
+        font-size: 16px;
+        padding: 18px;
+    }
+}
+</style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌤️ Trang thông tin thời tiết</h1>
+        <p>Khu dân cư 25 Thạc Gián<br> Phường Thanh Khê, Thành phố Đà Nẵng</p>
+    </div>
+
+    <!-- Vị trí chữ chạy trên (màu vàng) -->
+    <div id="marquee-top"></div>
+
+    <object data="tinmoi.html" width="100%" height="260px"></object>
+
+    <div class="container">
+        <div class="content">         
+            <div class="grid-sections">           
+                <div class="section-box">
+                    <details>
+                        <summary>⚠️ Thông báo</summary>
+                        <div class="section-content" style="line-height: 1.6; text-align: justify;">
+                            <p style="text-indent: 30px;">
+                                Kính chào! Trang web này cung cấp thông tin thời tiết, cảnh báo bão lũ và hỗ trợ khẩn cấp cho khu dân cư.
+                            </p>
+
+                            <p style="text-indent: 30px;">
+                                Vui lòng theo dõi thường xuyên để cập nhật tình hình thời tiết và các cảnh báo từ cơ quan khí tượng.
+                            </p>
+
+                            <p style="text-indent: 30px;">
+                                Lúc mưa to, gió lớn, bạn có thể xem tình hình một số nơi trong thành phố.
+                            </p>
+
+                            <p style="text-indent: 30px;">
+                                Để phục vụ nhân dân tốt nhất, vui lòng góp ý để hoàn thiện ứng dụng.
+                            </p>
+
+                            <p style="text-indent: 30px;">
+                                <strong>Cám ơn!</strong>
+                            </p>
+                        </div>
+                    </details>
+                </div>
+  
+                <!-- Mục: Công điện của BAN CHỈ ĐẠO PHÒNG THỦ DÂN SỰ QUỐC GIA -->
+                <div class="section-box" style="display: none;">
+                    <a href="congdien.html" class="noti-btn">
+                        📄 Công điện của BAN CHỈ ĐẠO PHÒNG THỦ DÂN SỰ QUỐC GIA
+                    </a>
+                </div>
+  
+                <div class="section-box" style="display: block;">
+                    <details>
+                        <summary>🆘 Liên hệ khẩn cấp & PCCC</summary>
+                        <div class="section-content">
+                            <p style="margin-bottom: 10px;">
+                                <span style="color:red;">Trong tình huống <b> thật sự khẩn cấp</b>, bà con cần liên hệ ngay:</span> 
+                            </p>
+                            <ul class="contact-list">
+                                <li><strong>🚑 Cứu thương:</strong> <a href="tel:115">115</a></li>
+                                <li><strong>🚒 Chữa cháy, cứu hộ:</strong> <a href="tel:114">114</a></li>
+                            </ul>
+                            
+                            <h4 style="margin-top: 15px; color: #1e3c72;">Liên hệ khu dân cư 25 Thạc Gián:</h4>
+                            <ul class="contact-list">
+                                <li><strong>☎️ Cảnh sát khu vực 25 Thạc Gián:</strong> <a href="tel:0905772273">0905 772 273</a></li>
+                                <li><strong>☎️ Bí thư chi bộ 25 Thạc Gián:</strong> <a href="tel:0905118995">0905 118 995</a></li>
+                                <li><strong>☎️ Trưởng ban Công tác Mặt trận:</strong> <a href="tel:0905203213">0905 203 213</a></li>
+                                <li><strong>☎️ Tổ trưởng tổ dân phố 25 Thạc Gián:</strong> <a href="tel:0905133157">0905 133 157</a></li>
+                                <li><strong>☎️ Tổ phó tổ dân phố 25 Thạc Gián:</strong> <a href="tel:0905896548">0905 896 548</a></li>
+                            </ul>
+                            <p style="font-size: 16px; margin-top: 10px;">
+                                <span style="color:#6E00C8;"><b>Hãy cùng nhau chủ động phòng chống bão, giữ an toàn cho gia đình và cộng đồng!</b></span> 
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button onclick="openWeatherModal()" class="btn btn-weather">
+                    <span class="btn-icon">⛈️</span>
+                    Xem thông tin thời tiết
+                </button>
+                
+                <button onclick="openSafetyGuide()" class="btn btn-camera">
+                    <span class="btn-icon">🛡️</span>
+                    Hướng dẫn an toàn <br> khi bão đổ bộ
+                </button>
+                
+                <a href="https://camera.0511.vn/camera.html" target="_blank" class="btn btn-camera">
+                    <span class="btn-icon">📹</span>
+                    Xem camera thành phố
+                </a>               
+                <a href="support.html" class="btn btn-support">
+                    <span class="btn-icon">🙋‍♂️</span>
+                    Yêu cầu hỗ trợ khẩn cấp <br> hoặc góp ý cho ứng dụng
+                </a>
+            </div>
+        </div>
+
+        <!-- Vị trí chữ chạy dưới (màu đỏ) -->
+        <div id="marquee-bottom"></div>
+
+        <div class="footer">
+            <p>Tổ công nghệ số cộng đồng 25 Thạc Gián</p>
+            <p>Phường Thanh Khê - Thành phố Đà Nẵng</p>
+            <div style="text-align:center; margin:10px 0;">
+                <img src="https://api.visitorbadge.io/api/visitors?path=thong_bao_thoi_tiet&label=Tổng%20lượt%20truy%20cập&countColor=%23007b5e&labelColor=rgba(255,255,255,0)&style=flat-square" 
+                    alt="Tổng lượt truy cập"
+                    style="height:28px; border:1px solid #007b5e; border-radius:6px; padding:3px; background:rgba(255,255,255,0.8);">
+            </div>
+        </div>
+    </div>
+       
+    <!-- Modal chọn trang thời tiết -->
+    <div id="weatherModal" class="weather-modal">
+        <div class="weather-modal-content">
+            <h2>🌤️ Chọn trang thời tiết</h2>
+            <p>Vui lòng chọn một trong các trang thời tiết dưới đây:</p>
+            
+            <div class="weather-options">
+                <div class="weather-option" onclick="selectWeatherOption(0)">
+                    <div class="weather-option-icon">🌦️</div>
+                    <div class="weather-option-info">
+                        <div class="weather-option-name">Trung tâm Dự báo Khí tượng Thủy văn Quốc gia</div>
+                        <div class="weather-option-desc">Cung cấp thông tin thời tiết chính thức từ cơ quan nhà nước</div>
+                    </div>
+                </div>
+                
+                <div class="weather-option" onclick="selectWeatherOption(1)">
+                    <div class="weather-option-icon">🌪️</div>
+                    <div class="weather-option-info">
+                        <div class="weather-option-name">Cổng thông tin Phòng chống thiên tai</div>
+                        <div class="weather-option-desc">Thông tin về phòng chống thiên tai và ứng phó khẩn cấp</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="weather-modal-buttons">
+                <button class="weather-modal-btn weather-modal-cancel" onclick="closeWeatherModal()">Hủy bỏ</button>
+                <button class="weather-modal-btn weather-modal-go" onclick="goToWeatherSite()">Truy cập</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import file cấu hình chữ chạy -->
+    <script src="marquee.js"></script>
+
+    <script>
+        // Danh sách các trang thời tiết
+        const weatherSites = [
+            { name: "Trung tâm Dự báo Khí tượng Thủy văn Quốc gia", url: "https://nchmf.gov.vn" },
+            { name: "Cổng thông tin Phòng chống thiên tai", url: "http://phongchongthientai.mard.gov.vn" }
+        ];
+
+        let selectedWeatherSite = 0;
+
+        function openWeatherModal() {
+            document.getElementById('weatherModal').style.display = 'flex';
+            selectWeatherOption(0);
+        }
+
+        function closeWeatherModal() {
+            document.getElementById('weatherModal').style.display = 'none';
+        }
+
+        function selectWeatherOption(index) {
+            selectedWeatherSite = index;
+            document.querySelectorAll('.weather-option').forEach((option, i) => {
+                if (i === index) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        function goToWeatherSite() {
+            const site = weatherSites[selectedWeatherSite];
+            window.open(site.url, '_blank');
+            closeWeatherModal();
+        }
+
+        function openSafetyGuide() {
+            window.open('huongdan.html', '_blank');
+        }
+
+        function autoCloseDetails() {
+            const allDetails = document.querySelectorAll('.section-box details');
+            allDetails.forEach(detail => {
+                detail.addEventListener('toggle', function() {
+                    if (this.open) {
+                        allDetails.forEach(otherDetail => {
+                            if (otherDetail !== this && otherDetail.open) {
+                                otherDetail.open = false;
+                            }
+                        });
+                    }
+                });
+            });
+        }        
+
+        document.addEventListener('DOMContentLoaded', () => {
+            autoCloseDetails();
+        });
+
+        window.onclick = function(event) {
+            const weatherModal = document.getElementById('weatherModal');
+            if (event.target === weatherModal) {
+                closeWeatherModal();
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
