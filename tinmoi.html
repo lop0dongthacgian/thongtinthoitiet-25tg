@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Công điện chỉ đạo ứng phó áp thấp nhiệt đới</title>
+    <style>
+        /* ===== CSS RESET & NỀN TẢNG ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #eef2f7 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+
+        /* ===== KHUNG THÔNG BÁO CHÍNH ===== */
+        .alert-container {
+            max-width: 780px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.25),
+                        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== PHẦN ĐẦU – CẢNH BÁO ===== */
+        .alert-header {
+            background: linear-gradient(105deg, #b91c1c 0%, #991b1b 100%);
+            padding: 18px 28px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 3px solid #fbbf24;
+        }
+
+        .alert-header .icon {
+            font-size: 2.2rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .alert-header h1 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+
+        /* ===== NỘI DUNG ===== */
+        .alert-body {
+            padding: 28px 32px 32px;
+        }
+
+        .alert-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            border-left: 6px solid #b91c1c;
+            padding-left: 18px;
+        }
+
+        .alert-description {
+            font-size: 1.05rem;
+            color: #334155;
+            margin-bottom: 28px;
+            background: #f8fafc;
+            padding: 18px 22px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: justify;
+        }
+
+        .alert-description strong {
+            color: #b91c1c;
+        }
+
+        /* ===== NÚT TRUY CẬP ===== */
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 38px;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 10px 18px -6px rgba(30, 58, 138, 0.4),
+                        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            line-height: 1.4;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .btn-link:hover {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            box-shadow: 0 16px 26px -8px rgba(30, 58, 138, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-link:active {
+            transform: translateY(2px);
+            box-shadow: 0 6px 12px -4px rgba(30, 58, 138, 0.5);
+        }
+
+        .btn-link .btn-icon {
+            font-size: 1.3rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-link:hover .btn-icon {
+            transform: scale(1.1) translateX(3px);
+        }
+
+        /* ===== GHI CHÚ / NGUỒN ===== */
+        .source-note {
+            margin-top: 26px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            font-style: italic;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 18px;
+        }
+
+        .source-note a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #1e3a8a;
+        }
+
+        .source-note a:hover {
+            color: #b91c1c;
+            border-bottom-color: #b91c1c;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .alert-header {
+                padding: 16px 20px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .alert-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .alert-header .icon {
+                font-size: 1.8rem;
+            }
+
+            .alert-body {
+                padding: 22px 18px 26px;
+            }
+
+            .alert-title {
+                font-size: 1.15rem;
+                padding-left: 14px;
+                border-left-width: 5px;
+            }
+
+            .alert-description {
+                font-size: 0.98rem;
+                padding: 16px 16px;
+            }
+
+            .btn-link {
+                padding: 15px 24px;
+                font-size: 1rem;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .btn-link .btn-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .alert-header h1 {
+                font-size: 1.05rem;
+            }
+
+            .btn-link {
+                flex-direction: column;
+                gap: 6px;
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alert-container">
+        <!-- PHẦN ĐẦU – CẢNH BÁO -->
+        <div class="alert-header">
+            <span class="icon">⚠️</span>
+            <h1>CÔNG ĐIỆN CHỈ ĐẠO ỨNG PHÓ</h1>
+        </div>
+
+        <!-- NỘI DUNG CHÍNH -->
+        <div class="alert-body">
+            <div class="alert-title">
+                Chủ động ứng phó áp thấp nhiệt đới có khả năng mạnh lên thành bão; mưa lớn diện rộng, nguy cơ lũ quét, sạt lở đất...
+            </div>
+
+            <div class="alert-description">
+                <strong>📌 Nội dung công điện:</strong> Ban Chỉ đạo Phòng thủ dân sự quốc gia yêu cầu các tỉnh, thành phố khu vực Trung Bộ và các địa phương liên quan theo dõi chặt chẽ diễn biến áp thấp nhiệt đới, chủ động triển khai biện pháp ứng phó với mưa lớn, lũ, ngập lụt, lũ quét, sạt lở đất, lốc, sét, mưa đá. Đồng thời, các Bộ, ngành, địa phương khẩn trương rà soát phương án, sẵn sàng lực lượng, phương tiện, vật tư theo phương châm “4 tại chỗ”, đảm bảo an toàn tính mạng và tài sản của Nhân dân.
+            </div>
+
+            <!-- NÚT XEM NỘI DUNG -->
+            <div class="btn-wrapper">
+                <a href="https://xaydungchinhsach.chinhphu.vn/chu-dong-ung-pho-ap-thap-nhiet-doi-co-kha-nang-manh-len-thanh-bao-mua-lon-dien-rong-nguy-co-lu-quet-sat-lo-dat-119260908213129196.htm"
+                   class="btn-link"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <span class="btn-icon">📄</span>
+                    <span>Xem nội dung công điện đầy đủ</span>
+                </a>
+            </div>
+
+            <!-- GHI CHÚ NGUỒN -->
+            <div class="source-note">
+                <span>🔗 Nguồn: </span>
+                <a href="https://xaydungchinhsach.chinhphu.vn/chu-dong-ung-pho-ap-thap-nhiet-doi-co-kha-nang-manh-len-thanh-bao-mua-lon-dien-rong-nguy-co-lu-quet-sat-lo-dat-119260908213129196.htm" target="_blank" rel="noopener noreferrer">
+                    Cổng thông tin điện tử Chính phủ – Xây dựng chính sách, pháp luật
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
