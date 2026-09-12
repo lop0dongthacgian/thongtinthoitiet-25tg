@@ -22,7 +22,7 @@ body {
 
 .container {
     max-width: 900px;
-    margin: 20px 0 auto;
+    margin: 20px auto 0;   /* khoảng cách với phần trên */
     background: white;
     border-radius: 10px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
@@ -70,7 +70,10 @@ body {
     text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
-/* CSS cho chữ chạy được tạo động bởi marquee.js */
+/* Khoảng cách cho chữ chạy trên */
+#marquee-top {
+    margin-top: 15px;
+}
 
 .content {
     padding: 40px 30px;
@@ -96,8 +99,10 @@ body {
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
+/* Thẻ details: viền mảnh màu xanh bao quanh */
 .section-box details {
-    border-left: 5px solid #667eea;
+    border: 1px solid #667eea;
+    border-radius: 12px;
     transition: all 0.4s ease;
 }
 
@@ -184,12 +189,7 @@ body {
     margin: 30px 0;
 }
 
-/* Viền hai bên đồng bộ cho mọi mục dạng thẻ mở rộng (details) */
-.section-box details {
-    border-right: 5px solid #667eea;
-}
-
-/* Định dạng cho nút dạng liên kết (Tin mới, Công điện...) */
+/* Nút dạng liên kết (Tin mới): viền mảnh màu xanh bao quanh */
 .noti-btn {
     display: flex;
     align-items: center;
@@ -205,8 +205,7 @@ body {
     font-weight: 600;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-left: 5px solid #667eea;
-    border-right: 5px solid #667eea;
+    border: 1px solid #667eea;
     cursor: pointer;
 }
 
@@ -643,12 +642,3 @@ body {
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
