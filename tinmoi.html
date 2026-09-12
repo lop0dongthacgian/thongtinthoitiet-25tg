@@ -109,7 +109,7 @@
             color: white;
             text-decoration: none;
             padding: 16px 38px;
-            border-radius: 60px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 1.1rem;
             letter-spacing: 0.3px;
@@ -220,6 +220,27 @@
                 padding: 14px 16px;
             }
         }
+        .home-btn {
+  width: 100%;
+  background: white;
+  color: #0000ff;
+  border: 2px solid #0000ff;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
+}
+
+.home-btn:hover {
+  background: #0000ff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
+}
     </style>
 </head>
 <body>
@@ -251,7 +272,7 @@
                     <span>Xem nội dung công điện</span>
                 </a>
             </div>
-
+            <button type="button" class="home-btn" onclick="goHome()">🏠 VỀ TRANG CHỦ</button>
             <!-- GHI CHÚ NGUỒN -->
             <div class="source-note">
                 <span>🔗 Nguồn: </span>
@@ -261,6 +282,11 @@
             </div>
         </div>
     </div>
-
+    <script>
+    function goHome() {
+    window.location.href = 'index.html';
+    }
+    </script>
 </body>
+
 </html>
