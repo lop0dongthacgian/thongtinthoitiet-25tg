@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIN ÁP THẤP NHIỆT ĐỚI KHẨN CẤP</title>
+    <style>
+        /* ===== CSS RESET & NỀN TẢNG ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(145deg, #eef2f7 0%, #d9e2ec 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+
+        /* ===== KHUNG THÔNG BÁO CHÍNH ===== */
+        .alert-container {
+            max-width: 780px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 20px 35px -8px rgba(0, 20, 30, 0.25),
+                        0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+            overflow: hidden;
+            transition: transform 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        /* ===== PHẦN ĐẦU – CẢNH BÁO ===== */
+        .alert-header {
+            background: linear-gradient(105deg, #b91c1c 0%, #991b1b 100%);
+            padding: 18px 28px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 3px solid #fbbf24;
+        }
+
+        .alert-header .icon {
+            font-size: 2.2rem;
+            line-height: 1;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .alert-header h1 {
+            font-size: 1.45rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+            flex: 1;
+        }
+
+        /* ===== NỘI DUNG ===== */
+        .alert-body {
+            padding: 28px 32px 32px;
+        }
+
+        .alert-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 14px;
+            line-height: 1.4;
+            border-left: 2px solid #b91c1c;
+            border-right: 2px solid #b91c1c;
+            padding-left: 18px;
+        }
+
+        .alert-description {
+            font-size: 1.05rem;
+            color: #334155;
+            margin-bottom: 28px;
+            background: #f8fafc;
+            padding: 18px 22px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            text-align: justify;
+        }
+
+        .alert-description strong {
+            color: #b91c1c;
+        }
+
+        /* ===== NÚT TRUY CẬP ===== */
+        .btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .btn-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 38px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 10px 18px -6px rgba(30, 58, 138, 0.4),
+                        0 0 0 2px rgba(255, 255, 255, 0.2) inset;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+            line-height: 1.4;
+            text-align: center;
+            word-break: break-word;
+        }
+
+        .btn-link:hover {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+            box-shadow: 0 16px 26px -8px rgba(30, 58, 138, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-link:active {
+            transform: translateY(2px);
+            box-shadow: 0 6px 12px -4px rgba(30, 58, 138, 0.5);
+        }
+
+        .btn-link .btn-icon {
+            font-size: 1.3rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-link:hover .btn-icon {
+            transform: scale(1.1) translateX(3px);
+        }
+
+        /* ===== GHI CHÚ / NGUỒN ===== */
+        .source-note {
+            margin-top: 26px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #64748b;
+            font-style: italic;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 18px;
+        }
+
+        .source-note a {
+            color: #1e3a8a;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px dotted #1e3a8a;
+        }
+
+        .source-note a:hover {
+            color: #b91c1c;
+            border-bottom-color: #b91c1c;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .alert-header {
+                padding: 16px 20px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .alert-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .alert-header .icon {
+                font-size: 1.8rem;
+            }
+
+            .alert-body {
+                padding: 22px 18px 26px;
+            }
+
+            .alert-title {
+                font-size: 1.15rem;
+                padding-left: 14px;
+                border-left-width: 2px;
+            }
+
+            .alert-description {
+                font-size: 0.98rem;
+                padding: 16px 16px;
+            }
+
+            .btn-link {
+                padding: 15px 24px;
+                font-size: 1rem;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .btn-link .btn-icon {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .alert-header h1 {
+                font-size: 1.05rem;
+            }
+
+            .btn-link {
+                flex-direction: column;
+                gap: 6px;
+                padding: 14px 16px;
+            }
+        }
+
+        .home-btn {
+            width: 100%;
+            background: white;
+            color: #0000ff;
+            border: 2px solid #0000ff;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 255, 0.2);
+        }
+
+        .home-btn:hover {
+            background: #0000ff;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 255, 0.3);
+        }
+
+        /* Định dạng danh sách trong mô tả */
+        .alert-description ul {
+            margin: 8px 0 0 20px;
+            padding-left: 0;
+        }
+
+        .alert-description li {
+            margin-bottom: 4px;
+        }
+
+        .alert-description p {
+            margin-bottom: 10px;
+        }
+
+        .alert-description p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="alert-container">
+        <!-- PHẦN ĐẦU – CẢNH BÁO -->
+        <div class="alert-header">
+            <span class="icon">⚠️</span>
+            <h1>CẬP NHẬT TIN ÁP THẤP NHIỆT ĐỚI KHẨN CẤP</h1>
+        </div>
+
+        <!-- NỘI DUNG CHÍNH -->
+        <div class="alert-body">
+            <div class="alert-title">
+                TIN ÁP THẤP NHIỆT ĐỚI KHẨN CẤP
+            </div>
+
+            <div class="alert-description">
+                <p><strong>📌 1. Hiện trạng áp thấp nhiệt đới:</strong></p>
+                <ul>
+                    <li>Hồi 19 giờ ngày 12/9, vị trí tâm áp thấp nhiệt đới ở vào khoảng 16,4 độ Vĩ Bắc; 109,8 độ Kinh Đông, trên vùng biển Quảng Trị - Tp. Đà Nẵng; cách Tp. Đà Nẵng khoảng 160km về phía Đông Đông Bắc, cách Tp. Huế khoảng 200km về phía Đông Đông Nam.</li>
+                    <li>Sức gió mạnh nhất vùng gần tâm áp thấp nhiệt đới mạnh cấp 6 (39-49km/h), giật cấp 8; di chuyển theo hướng Tây Bắc, tốc độ khoảng 10km/h.</li>
+                </ul>
+
+                <p><strong>📌 2. Dự báo diễn biến (trong 24 đến 48 giờ tới):</strong></p>
+                <ul>
+                    <li>19h ngày 13/9: Trên vùng biển Quảng Trị - Tp. Huế. Cường độ: Cấp 6, giật cấp 8. Vùng nguy hiểm: Phía Tây kinh tuyến 111,0E. Cấp độ rủi ro thiên tai: Cấp 3 (Phía Tây đặc khu Hoàng Sa, vùng biển từ Quảng Trị đến Tp. Đà Nẵng, khu vực ven biển Hà Tĩnh-Quảng Trị).</li>
+                    <li>19h ngày 14/9: Trên khu vực Trung Lào, suy yếu dần thành một vùng áp thấp. Cấp độ rủi ro thiên tai: Cấp 3 (vùng biển từ Hà Tĩnh đến Quảng Trị, khu vực ven biển Hà Tĩnh-Quảng Trị).</li>
+                </ul>
+
+                <p><strong>📌 3. Dự báo tác động:</strong></p>
+                <ul>
+                    <li><strong>Trên biển:</strong> Vùng biển phía Tây đặc khu Hoàng Sa, vùng biển từ Hà Tĩnh đến Tp. Đà Nẵng có gió mạnh cấp 6, giật cấp 8, sóng biển cao 2,0-4,0m; biển động. Tiềm ẩn nguy cơ lật, chìm tàu thuyền, hư hỏng lồng bè và công trình ven biển.</li>
+                    <li><strong>Ven biển:</strong> Khu vực ven biển từ Hà Tĩnh đến Quảng Trị từ chiều tối ngày 13/9, gió mạnh dần lên cấp 6, giật cấp 8. Có thể làm tốc mái nhà, gãy đổ cây xanh, ảnh hưởng đến hệ thống điện và giao thông.</li>
+                    <li><strong>Mưa lớn:</strong>
+                        <ul>
+                            <li>Tối 12/9 - 13/9: Hà Tĩnh đến phía Bắc Quảng Trị mưa to 50-100mm (có nơi >180mm); phía Nam Quảng Trị đến Đà Nẵng mưa to đến rất to 100-200mm (có nơi >350mm).</li>
+                            <li>Đêm 13/9 - 14/9: Thanh Hóa đến Quảng Trị mưa to đến rất to 100-200mm (có nơi >350mm); Trung du, đồng bằng Bắc Bộ, Huế, Đà Nẵng mưa vừa, mưa to.</li>
+                            <li>Đêm 14/9 - 15/9: Tiếp tục mưa lớn ở Trung du, đồng bằng Bắc Bộ, Thanh Hóa đến Nghệ An, Quảng Trị. Đợt mưa có khả năng kéo dài đến sáng 16/9.</li>
+                            <li>→ Tác động: Nguy cơ ngập úng đô thị, lũ trên sông suối nhỏ, lũ quét và sạt lở đất tại khu vực miền núi.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Dông, lốc xoáy:</strong> Đề phòng nguy cơ xảy ra dông, lốc và gió giật mạnh do ảnh hưởng của hoàn lưu áp thấp nhiệt đới.</li>
+                </ul>
+            </div>
+
+            <!-- NÚT VỀ TRANG CHỦ -->
+            <button type="button" class="home-btn" onclick="goHome()">🏠 VỀ TRANG CHỦ</button>
+
+            <!-- GHI CHÚ NGUỒN -->
+            <div class="source-note">
+                <span>🔗 Nguồn: </span>
+                <a href="https://nchmf.gov.vn/kttvsite/vi-VN/1/tin-ap-thap-nhiet-doi-khan-cap-post54737.html" target="_blank" rel="noopener noreferrer">
+                    Trung tâm Dự báo Khí tượng Thủy văn Quốc gia
+                </a>
+            </div>
+        </div>
+    </div>
+    <script>
+    function goHome() {
+    window.location.href = 'index.html';
+    }
+    </script>
+</body>
+
+</html>
