@@ -2,15 +2,13 @@ const marqueeConfig = {
     // Chữ chạy phía trên (màu vàng) – hỗ trợ nhiều câu luân phiên
     topMarquee: {
         texts: [
-            "Ở khu vực Bắc Bộ và Bắc Trung Bộ phổ biến không mưa, đêm và sáng trời rét, vùng núi Bắc Bộ có nơi rét đậm.",
-            "Vùng núi cao của Bắc Bộ đề phòng khả năng xảy ra sương muối.",
-            "Nhiệt độ thấp nhất trong đợt không khí lạnh này ở khu vực Bắc Bộ và Bắc Trung Bộ phổ biến từ 12-15 độ, vùng núi Bắc Bộ 10-12 độ, vùng núi cao có nơi dưới 10 độ."
+            "NHẤN MỤC TIN MỚI ĐỂ XEM TIN ÁP THẤP NHIỆT ĐỚI KHẨN CẤP"
         ],
         color: "#FFFF00",
         fontSize: "35px",
         speed: 220, // Tốc độ chạy chữ
         pauseBetween: 2000, // Thời gian dừng giữa các câu (ms)
-        enabled: false
+        enabled: true
     },  
     // Chữ chạy phía dưới (màu đỏ) – giữ nguyên
     bottomMarquee: {
