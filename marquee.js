@@ -1,16 +1,15 @@
 const marqueeConfig = {
     // Chữ chạy phía trên (màu vàng) – hỗ trợ nhiều câu luân phiên
     topMarquee: {
-        texts:
-            "Nhấn mục TIN MỚI để xem công điện:
-Về việc chủ động ứng phó với thiên tai trong thời gian tới",
-        
+        texts: [
+            "Nhấn mục TIN MỚI để xem công điện: Về việc chủ động ứng phó với thiên tai trong thời gian tới",
+        ],
         color: "#FFFF00",
         fontSize: "35px",
-        speed: 220, // Tốc độ chạy chữ
+        speed: 220, // Tốc độ chạy chữ (px/giây) - giảm xuống 80-120 nếu muốn chậm hơn
         pauseBetween: 500, // Thời gian dừng giữa các câu (ms)
         enabled: true
-    },  
+    },
     // Chữ chạy phía dưới (màu đỏ) – giữ nguyên
     bottomMarquee: {
         text: "Hãy cùng nhau chủ động phòng chống bão, lũ... giữ an toàn cho gia đình và cộng đồng!",
@@ -24,48 +23,55 @@ Về việc chủ động ứng phó với thiên tai trong thời gian tới",
 // KHỞI TẠO CHỮ CHẠY
 function initMarquee() {
     // === XỬ LÝ DÒNG TRÊN: nhiều câu, chạy luân phiên ===
-    if (marqueeConfig.topMarquee.enabled && Array.isArray(marqueeConfig.topMarquee.texts) && marqueeConfig.topMarquee.texts.length > 0) {
+    if (
+        marqueeConfig.topMarquee.enabled &&
+        Array.isArray(marqueeConfig.topMarquee.texts) &&
+        marqueeConfig.topMarquee.texts.length > 0
+    ) {
         const topContainer = document.getElementById('marquee-top');
         if (topContainer) {
             const wrapper = document.createElement('div');
             wrapper.className = 'marquee-wrapper';
-            
+
             const content = document.createElement('div');
             content.className = 'marquee-content';
             content.id = 'top-marquee-content';
-            
+
             wrapper.appendChild(content);
             topContainer.innerHTML = '';
             topContainer.appendChild(wrapper);
 
             let currentIndex = 0;
-            
+
             function showTextWithAnimation() {
                 const text = marqueeConfig.topMarquee.texts[currentIndex];
                 content.textContent = text;
-                
-                // Đảm bảo chữ đã được render trước khi tính toán
-                setTimeout(() => {
-                    const containerWidth = wrapper.offsetWidth;
-                    const textWidth = content.scrollWidth;
-                    
-                    // Tính thời gian animation dựa trên chiều dài văn bản
-                    const duration = (textWidth + containerWidth) / marqueeConfig.topMarquee.speed;
-                    
-                    // Áp dụng animation
-                    content.style.animation = `none`;
-                    void content.offsetWidth; // Trigger reflow
-                    content.style.animation = `scrollTopMarquee ${duration}s linear`;
-                    
-                    // Chuyển sang câu tiếp theo sau khi hoàn thành animation + thời gian dừng
-                    setTimeout(() => {
-                        currentIndex = (currentIndex + 1) % marqueeConfig.topMarquee.texts.length;
-                        showTextWithAnimation();
-                    }, (duration * 1000) + marqueeConfig.topMarquee.pauseBetween);
-                    
-                }, 50);
+
+                // Reset animation trước khi chạy lại
+                content.style.animation = 'none';
+                content.style.transform = 'translateX(0)';
+
+                // Đợi 2 frame để layout và kích thước text được cập nhật
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        const containerWidth = wrapper.offsetWidth;
+                        const textWidth = content.scrollWidth;
+
+                        // Quãng đường: từ left:100% (ngoài phải) → -textWidth (ngoài trái)
+                        const distance = textWidth + containerWidth;
+                        const duration = distance / marqueeConfig.topMarquee.speed; // giây
+
+                        content.style.animation = `scrollTopMarquee ${duration}s linear forwards`;
+
+                        // Chuyển sang câu tiếp theo sau khi hoàn thành animation + thời gian dừng
+                        setTimeout(() => {
+                            currentIndex = (currentIndex + 1) % marqueeConfig.topMarquee.texts.length;
+                            showTextWithAnimation();
+                        }, duration * 1000 + marqueeConfig.topMarquee.pauseBetween);
+                    });
+                });
             }
-            
+
             showTextWithAnimation();
         }
     }
@@ -97,7 +103,7 @@ function applyMarqueeStyles() {
             white-space: nowrap;
             box-sizing: border-box;
             position: relative;
-            height: 40px;
+            height: 50px;
             display: flex;
             align-items: center;
         }
@@ -111,13 +117,14 @@ function applyMarqueeStyles() {
             white-space: nowrap;
             position: absolute;
             left: 100%;
+            will-change: transform;
         }
         @keyframes scrollTopMarquee {
-            0% { 
-                transform: translateX(0); 
+            0% {
+                transform: translateX(0);
             }
-            100% { 
-                transform: translateX(calc(-100% - 100vw)); 
+            100% {
+                transform: translateX(calc(-100% - 100vw));
             }
         }
 
@@ -144,7 +151,7 @@ function applyMarqueeStyles() {
                 font-size: 20px;
             }
             .marquee-wrapper {
-                height: 35px;
+                height: 40px;
             }
         }
     `;
