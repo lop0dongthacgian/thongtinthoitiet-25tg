@@ -1,10 +1,10 @@
 const marqueeConfig = {
     // Chữ chạy phía trên (màu vàng) – hỗ trợ nhiều câu luân phiên
     topMarquee: {
-        texts: [
+        texts:
             "Nhấn mục TIN MỚI để xem công điện:
 Về việc chủ động ứng phó với thiên tai trong thời gian tới",
-        ],
+        
         color: "#FFFF00",
         fontSize: "35px",
         speed: 220, // Tốc độ chạy chữ
