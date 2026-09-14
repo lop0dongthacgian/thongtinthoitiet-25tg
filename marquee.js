@@ -3,7 +3,7 @@ const marqueeConfig = {
     topMarquee: {
         texts: [
             "Nhấn mục TIN MỚI để xem công điện:
-Về việc chủ động ứng phó với thiên tai trong thời gian tới"
+Về việc chủ động ứng phó với thiên tai trong thời gian tới",
         ],
         color: "#FFFF00",
         fontSize: "35px",
