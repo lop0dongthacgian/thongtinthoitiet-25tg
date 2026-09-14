@@ -8,7 +8,7 @@ const marqueeConfig = {
         fontSize: "35px",
         speed: 220, // Tốc độ chạy chữ (px/giây) - giảm xuống 80-120 nếu muốn chậm hơn
         pauseBetween: 500, // Thời gian dừng giữa các câu (ms)
-        enabled: true
+        enabled: true  // Bật: true /tắt: false chữ chạy này
     },
     // Chữ chạy phía dưới (màu đỏ) – giữ nguyên
     bottomMarquee: {
@@ -16,7 +16,7 @@ const marqueeConfig = {
         color: "#FF0000",
         fontSize: "35px",
         speed: 15,
-        enabled: true
+        enabled: true   // Bật: true /tắt: false chữ chạy này
     }
 };
 
